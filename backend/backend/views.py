@@ -3,16 +3,35 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import RegisterSerializer
 
+from django.contrib.auth.models import User  # django.contrib.auth.models
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def hello_api(request):
-    return Response({"message": "hello from Django API","status": "ok"})
+    return Response({"message": "hello from Django API", "status": "ok"})
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def register_user(request):
-    serializer = RegisterSerializer(data = request.data)
+    serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "user registered","status": "ok"}, status=status.HTTP_201_CREATED)
+        return Response(
+            {"message": "user registered", "status": "ok"},
+            status=status.HTTP_201_CREATED,
+        )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(["POST"])
+def basic_login(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+    # Authentication logic here
+    try:
+        user = User.objects.get(username=username, password=password)
+        return Response({"message": "Login success..!!"}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response(
+            {"message": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
+        )

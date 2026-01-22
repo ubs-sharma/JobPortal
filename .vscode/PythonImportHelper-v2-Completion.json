@@ -98,6 +98,14 @@
         "documentation": {}
     },
     {
+        "label": "User",
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
         "label": "serializers",
         "importPath": "rest_framework",
         "description": "rest_framework",
@@ -381,7 +389,7 @@
         "kind": 5,
         "importPath": "backend.backend.urls",
         "description": "backend.backend.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"hello/\",  hello_api),\n    path(\"register/\", register_user)\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"hello/\", hello_api),\n    path(\"register/\", register_user),\n    path(\"login/\", basic_login),\n]",
         "detail": "backend.backend.urls",
         "documentation": {}
     },
@@ -390,7 +398,7 @@
         "kind": 2,
         "importPath": "backend.backend.views",
         "description": "backend.backend.views",
-        "peekOfCode": "def hello_api(request):\n    return Response({\"message\": \"hello from Django API\",\"status\": \"ok\"})\n@api_view(['POST'])\ndef register_user(request):\n    serializer = RegisterSerializer(data = request.data)\n    if serializer.is_valid():\n        serializer.save()\n        return Response({\"message\": \"user registered\",\"status\": \"ok\"}, status=status.HTTP_201_CREATED)\n    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)",
+        "peekOfCode": "def hello_api(request):\n    return Response({\"message\": \"hello from Django API\", \"status\": \"ok\"})\n@api_view([\"POST\"])\ndef register_user(request):\n    serializer = RegisterSerializer(data=request.data)\n    if serializer.is_valid():\n        serializer.save()\n        return Response(\n            {\"message\": \"user registered\", \"status\": \"ok\"},\n            status=status.HTTP_201_CREATED,",
         "detail": "backend.backend.views",
         "documentation": {}
     },
@@ -399,7 +407,16 @@
         "kind": 2,
         "importPath": "backend.backend.views",
         "description": "backend.backend.views",
-        "peekOfCode": "def register_user(request):\n    serializer = RegisterSerializer(data = request.data)\n    if serializer.is_valid():\n        serializer.save()\n        return Response({\"message\": \"user registered\",\"status\": \"ok\"}, status=status.HTTP_201_CREATED)\n    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)",
+        "peekOfCode": "def register_user(request):\n    serializer = RegisterSerializer(data=request.data)\n    if serializer.is_valid():\n        serializer.save()\n        return Response(\n            {\"message\": \"user registered\", \"status\": \"ok\"},\n            status=status.HTTP_201_CREATED,\n        )\n    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)\n@api_view([\"POST\"])",
+        "detail": "backend.backend.views",
+        "documentation": {}
+    },
+    {
+        "label": "basic_login",
+        "kind": 2,
+        "importPath": "backend.backend.views",
+        "description": "backend.backend.views",
+        "peekOfCode": "def basic_login(request):\n    username = request.data.get(\"username\")\n    password = request.data.get(\"password\")\n    # Authentication logic here\n    try:\n        user = User.objects.get(username=username, password=password)\n        return Response({\"message\": \"Login success..!!\"}, status=status.HTTP_200_OK)\n    except User.DoesNotExist:\n        return Response(\n            {\"message\": \"Invalid credentials\"}, status=status.HTTP_400_BAD_REQUEST",
         "detail": "backend.backend.views",
         "documentation": {}
     },
