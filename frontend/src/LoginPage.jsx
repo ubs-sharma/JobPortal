@@ -74,6 +74,7 @@ export const LoginPage = () => {
                   Username
                 </label>
                 <input
+                  required
                   name="username"
                   type="text"
                   placeholder="Enter your username"
@@ -86,6 +87,7 @@ export const LoginPage = () => {
                   Password
                 </label>
                 <input
+                  required
                   name="password"
                   type="password"
                   placeholder="Enter your password"
