@@ -1,27 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Job(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     company = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
-    salary_range = models.CharField(max_length=50, blank=True) #3-4 LPA
+    salary_range = models.CharField(max_length=50, blank=True)  # 3-4 LPA
     posted_on = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Application(models.Model):
     STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('shortlisted', 'Shortlisted'),
-        ('accepted', 'Accepted'),
-        ('rejected', 'Rejected'),
+        ("pending", "Pending"),
+        ("shortlisted", "Shortlisted"),
+        ("accepted", "Accepted"),
+        ("rejected", "Rejected"),
     )
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)    
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices = STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     applied_on = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
