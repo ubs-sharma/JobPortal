@@ -1,31 +1,33 @@
 import React from "react";
 import { useActionState } from "react";
-import { NavLink } from "react-router-dom";
-
-async function applyJobAction(_, formData) {
-  //const json = Object.fromEntries(formData);
-  const res = await fetch("http://127.0.0.1:8000/apply/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      job: 4,
-      applicant: 3,
-    }),
-  });
-
-  const data = await res.json();
-  if (res.ok) {
-    return { message: "Application submitted successfully", success: true };
-  }
-  return { message: data.message || "Application failed.", success: false };
-}
+import { NavLink, useParams } from "react-router-dom";
 
 export const ApplyJobPage = () => {
   const [result, formAction, isPending] = useActionState(applyJobAction, null, {
     withPending: true,
   });
+
+  const { jobId } = useParams();
+  const userId = localStorage.getItem("userId");
+
+  async function applyJobAction() {
+    const res = await fetch("http://127.0.0.1:8000/apply/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        job: jobId,
+        applicant: userId,
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      return { message: "Application submitted successfully", success: true };
+    }
+    return { message: data.message || "Application failed.", success: false };
+  }
 
   return (
     <div>

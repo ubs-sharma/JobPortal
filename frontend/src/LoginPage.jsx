@@ -1,6 +1,6 @@
 import React from "react";
 import { useActionState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 async function loginAction(_, formData) {
   const json = Object.fromEntries(formData);
@@ -12,12 +12,22 @@ async function loginAction(_, formData) {
     body: JSON.stringify(json),
   });
   const data = await res.json();
+  if (res.ok) {
+    localStorage.setItem("userId", JSON.stringify(data.user_id));
+    localStorage.setItem("username", JSON.stringify(data.username));
+  }
   return data.message || "Login failed.";
 }
 export const LoginPage = () => {
   const [message, formAction, isPending] = useActionState(loginAction, "", {
     withPending: true,
   });
+
+  const navigate = useNavigate();
+  if (message === "Login success..!!") {
+    navigate("/jobs");
+  }
+
   return (
     <div>
       <div className="bg-gray-50 text-gray-800">
