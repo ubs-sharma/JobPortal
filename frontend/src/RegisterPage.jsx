@@ -1,5 +1,6 @@
 import React from "react";
 import { useActionState } from "react";
+import { NavLink } from "react-router-dom";
 
 async function registerAction(_, formData) {
   const json = Object.fromEntries(formData);
@@ -125,13 +126,13 @@ export const RegisterPage = () => {
               </p>
 
               <p className="text-sm text-center text-gray-600">
-                Already registered?
-                <a
-                  href="#"
+                &nbsp;&nbsp;Already registered?
+                <NavLink
+                  to="/login"
                   className="text-blue-700 font-medium hover:underline"
                 >
-                  Login here
-                </a>
+                  &nbsp;Login here
+                </NavLink>
               </p>
             </form>
           </section>
